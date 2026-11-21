@@ -1,0 +1,275 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.game-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* 80% Mappa */
+.map-panel {
+    width: 80%;
+    height: 100%;
+    background-color: #00FFFF; /* Azzurro Aqua per il mare fuori dall'SVG */
+}
+
+#risiko-map {
+    width: 100%;
+    height: 100%;
+    display: block; /* Impedisce micro-spostamenti geometrici del mirino */
+}
+
+/* Stile Territori SVG */
+.territory path, path {
+    stroke: #000000;
+    stroke-width: 1.5px;
+    cursor: pointer;
+    transition: fill 0.3s ease;
+    pointer-events: auto !important; /* Forza i path ad essere gli unici recettori dei clic */
+}
+
+.army-counter {
+    fill: #000;
+    font-weight: bold;
+    font-size: 14px;
+    pointer-events: none !important; 
+}
+
+/* 20% Pannello Laterale */
+.side-panel {
+    width: 20%;
+    height: 100%;
+    background-color: #B5B5B5;
+    color: #FFF;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.5s ease;
+}
+
+/* Suddivisione in 3 aree verticali durante il gioco */
+.panel-section {
+    flex: 1; 
+    border-bottom: 1px solid #444;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-section:last-child {
+    border-bottom: none;
+}
+
+/* Grafica dei dadi */
+.dice-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.dice {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #333;
+}
+
+.dice.white { background-color: #FFF; color: #000; }
+.dice.black { background-color: #000; color: #FFF; border-color: #FFF; }
+
+/* Classi di utilità */
+.hidden { display: none !important; }
+
+/**
+ * RITOCCHI GRAFICI PER IL PANNELLO LATERALE
+ */
+.side-panel h3, 
+.side-panel h4, 
+.side-panel div, 
+.side-panel label, 
+.side-panel span {
+    background-color: transparent !important; 
+    color: #FFFFFF !important;               
+}
+
+#log-messages {
+    font-size: 15px;
+    line-height: 1.4;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.2) !important; 
+    border-radius: 5px;
+}
+
+.panel-section h4 {
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 3px;
+}
+
+/**
+ * FORZATURA VISIBILITÀ NUMERI E CERCHI ARMATE
+ */
+.info-territorio circle {
+    fill: #FFFFFF !important;
+    stroke: #000000 !important;
+    stroke-width: 15px !important;
+/*    pointer-events: none !important;  */
+    pointer-events: all; /* Rende cliccabile l'intero cerchio */
+}
+
+.testo-armate {
+    fill: #000000 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+/*    pointer-events: none !important;  */
+    pointer-events: bounding-box; /* Rende cliccabile l'intero rettangolo del testo (inclusi gli spazi) */
+    user-select: none;            /* Impedisce la selezione del testo al clic */
+}
+
+.info-territorio {
+    display: inline !important;
+    visibility: visible !important;
+/*    pointer-events: none !important;   */
+    cursor: pointer; /* Mostra la manina su tutto il gruppo */
+}
+
+/**
+ * STILE INFORMATIVO ARMATE E TESTI SVG
+ */
+/*g.info-territorio circle,
+circle {
+    fill: #FFFFFF !important;       
+    stroke: #000000 !important;     
+    stroke-width: 25px !important;  
+    opacity: 1 !important;          
+    visibility: visible !important;
+    pointer-events: none !important;
+}
+
+g.info-territorio text, 
+.testo-armate, 
+.testo-nome {
+    fill: #000000 !important;       
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+}                                 */
+
+/* CORRETTO: Scudo totale con la sintassi e virgole ripristinate
+.info-territorio, 
+.info-territorio circle, 
+.info-territorio text,
+.testo-armate,
+.testo-nome  {
+    pointer-events: none !important;
+}     */
+
+/* Lascia che solo i path geometrici della mappa ricevano il clic
+.mappa-path, path {
+    pointer-events: auto !important;
+    cursor: pointer;
+}                         */
+
+/* Stile per i pulsanti dinamici dell'Area Comandi */
+.btn-azione {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-attacco {
+    background-color: #FF3333; 
+    color: #FFFFFF;
+}
+
+.btn-passa {
+    background-color: #333333; 
+    color: #FFFFFF;
+}
+
+.btn-azione:hover {
+    opacity: 0.9;
+    transform: scale(1.02); 
+}
+
+.dice {
+    width: auto;
+    min-width: 70px;
+    padding: 4px 8px;
+    gap: 6px;
+}
+
+.mini-dado-attacco, .mini-dado-difesa {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.mini-dado-attacco {
+    border: 1px solid #000;
+}
+
+.mini-dado-difesa {
+    border: 1px solid #FFF;
+}
+
+/* Adatta i box dei dadi anche su schermi stretti o con F12 aperto */
+#dice-container, .dice-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.dice {
+    width: fit-content !important;
+    min-width: 60px;
+    height: auto !important;
+    min-height: 45px;
+    padding: 4px 6px;
+}
+
+/* Compatta i pulsanti extra e il riquadro logistica */
+#btn-vedi-obiettivo, #btn-vedi-carte, #btn-spionaggio-diplomazia {
+/*    display: inline-block !important;  */
+    width: 32% !important;
+    font-size: 10px !important;
+    padding: 4px 2px !important;
+    margin: 0 1% 4px 0 !important;
+    vertical-align: top;
+}
+#logistics-area {
+    padding: 5px 6px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+}
